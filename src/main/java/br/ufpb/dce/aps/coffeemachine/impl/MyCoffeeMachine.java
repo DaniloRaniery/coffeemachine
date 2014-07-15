@@ -18,8 +18,6 @@ public class MyCoffeeMachine implements CoffeeMachine{
 
 	public void insertCoin(Coin coin) {
 		total += coin.getValue();
-		int valor = total /100;
-	    int centavos = total % 100;
-		factory.getDisplay().info ("Total: US$ "+valor+"." + centavos);
+		factory.getDisplay().info ("Total: US$ "+total/100+"." + total%100);
 	}
 }
