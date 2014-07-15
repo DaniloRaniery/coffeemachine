@@ -19,11 +19,17 @@ public class MyCoffeeMachine implements CoffeeMachine{
 
 	public void insertCoin(Coin coin) throws CoffeeMachineException{
 		try{
-			total += coin.getValue();
-			factory.getDisplay().info ("Total: US$ "+total/100+"." + total%100);
+			this.total += coin.getValue();
+			this.factory.getDisplay().info ("Total: US$ "+this.total/100+"." + this.total%100);
 		}
 		catch(NullPointerException e){
 			throw new CoffeeMachineException("Moeda inválida"); 
+		}
+	}
+
+	public void cancel() throws CoffeeMachineException {
+		if( this.total == 0){
+			throw new CoffeeMachineException("Não houve moeda inserida"); 	
 		}
 	}
 }
