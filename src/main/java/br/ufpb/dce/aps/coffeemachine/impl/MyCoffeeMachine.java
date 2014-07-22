@@ -46,17 +46,21 @@ public class MyCoffeeMachine implements CoffeeMachine {
 
 		if (this.coins.size() > 0) {
 			Coin[] reverso = Coin.reverse();
+			int troco = this.coin.getValue();
 			this.factory.getDisplay().warn("Cancelling drink. Please, get your coins.");
 			for (Coin re : reverso) {
 				for (Coin aux : this.coins) {
 					if (aux == re) {
-						this.factory.getCashBox().release(aux);
+						this.factory.getCashBox().release(aux);		
 					}
 				}
 			}
-			this.factory.getDisplay().info("Insert coins and select a drink!");
+			
+			this.coins.clear();
 		}
+			this.factory.getDisplay().info("Insert coins and select a drink!");
 	}
+
 
 	public void select(Drink drink) {
 		this.factory.getCupDispenser().contains(1);
@@ -76,5 +80,7 @@ public class MyCoffeeMachine implements CoffeeMachine {
 		this.factory.getDrinkDispenser().release(1);
 		this.factory.getDisplay().info("Please, take your drink.");
 		this.factory.getDisplay().info("Insert coins and select a drink!");
+		
+		this.coins.clear();
 	}
 }
