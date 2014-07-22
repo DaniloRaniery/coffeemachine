@@ -19,6 +19,7 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	private CashBox cashBox;
 	private Coin coin;
 	private ArrayList<Coin> coins = new ArrayList<Coin>();
+	private Drink drink;
 
 	public MyCoffeeMachine(ComponentsFactory factory) {
 		this.factory = factory;
@@ -59,13 +60,17 @@ public class MyCoffeeMachine implements CoffeeMachine {
 
 	public void select(Drink drink) {
 		this.factory.getCupDispenser().contains(1);
-		this.factory.getWaterDispenser().contains(3);	
+		this.factory.getWaterDispenser().contains(3);
 		this.factory.getCoffeePowderDispenser().contains(200);
-	
+		if(drink == this.drink.BLACK_SUGAR){
+				this.factory.getSugarDispenser().contains(200);
+		}
 		this.factory.getDisplay().info("Mixing ingredients.");
 		this.factory.getCoffeePowderDispenser().release(200);
-		this.factory.getWaterDispenser().release(3);	
-		
+		this.factory.getWaterDispenser().release(3);
+		if(drink == this.drink.BLACK_SUGAR){
+			this.factory.getSugarDispenser().release(200);
+		}
 		this.factory.getDisplay().info("Releasing drink.");
 		this.factory.getCupDispenser().release(1);
 		this.factory.getDrinkDispenser().release(1);
