@@ -7,7 +7,10 @@ import br.ufpb.dce.aps.coffeemachine.CoffeeMachine;
 import br.ufpb.dce.aps.coffeemachine.CoffeeMachineException;
 import br.ufpb.dce.aps.coffeemachine.Coin;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
+import br.ufpb.dce.aps.coffeemachine.Dispenser;
 import br.ufpb.dce.aps.coffeemachine.Display;
+import br.ufpb.dce.aps.coffeemachine.Drink;
+import br.ufpb.dce.aps.coffeemachine.DrinkDispenser;
 
 public class MyCoffeeMachine implements CoffeeMachine {
 
@@ -52,5 +55,21 @@ public class MyCoffeeMachine implements CoffeeMachine {
 			}
 			this.factory.getDisplay().info("Insert coins and select a drink!");
 		}
+	}
+
+	public void select(Drink drink) {
+		this.factory.getCupDispenser().contains(1);
+		this.factory.getWaterDispenser().contains(3);	
+		this.factory.getCoffeePowderDispenser().contains(200);
+	
+		this.factory.getDisplay().info("Mixing ingredients.");
+		this.factory.getCoffeePowderDispenser().release(200);
+		this.factory.getWaterDispenser().release(3);	
+		
+		this.factory.getDisplay().info("Releasing drink.");
+		this.factory.getCupDispenser().release(1);
+		this.factory.getDrinkDispenser().release(1);
+		this.factory.getDisplay().info("Please, take your drink.");
+		this.factory.getDisplay().info("Insert coins and select a drink!");
 	}
 }
