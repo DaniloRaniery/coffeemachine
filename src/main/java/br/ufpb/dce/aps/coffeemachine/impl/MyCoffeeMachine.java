@@ -77,38 +77,43 @@ public class MyCoffeeMachine implements CoffeeMachine {
 
 
 	public void select(Drink drink) {
-		this.factory.getCupDispenser().contains(1);
-		if(!this.factory.getWaterDispenser().contains(3)){
-			this.factory.getDisplay().warn("Out of Water");
+		if(!this.factory.getCupDispenser().contains(1)){
+			this.factory.getDisplay().warn("Out of Cup");
 			this.cancelWithoutIngredients();
 		}
 		else{
-			if (!this.factory.getCoffeePowderDispenser().contains(200)) {
-				this.factory.getDisplay().warn("Out of Coffee Powder");
+			if (!this.factory.getWaterDispenser().contains(3)) {
+				this.factory.getDisplay().warn("Out of Water");
 				this.cancelWithoutIngredients();
 			} else {
-				if (drink == this.drink.BLACK_SUGAR
-						&& !this.factory.getSugarDispenser().contains(200)) {
-					this.factory.getDisplay().warn("Out of Sugar");
+				if (!this.factory.getCoffeePowderDispenser().contains(200)) {
+					this.factory.getDisplay().warn("Out of Coffee Powder");
 					this.cancelWithoutIngredients();
 				} else {
+					if (drink == this.drink.BLACK_SUGAR
+							&& !this.factory.getSugarDispenser().contains(200)) {
+						this.factory.getDisplay().warn("Out of Sugar");
+						this.cancelWithoutIngredients();
+					} else {
 
-					this.factory.getDisplay().info("Mixing ingredients.");
-					this.factory.getCoffeePowderDispenser().release(200);
-					this.factory.getWaterDispenser().release(3);
-					if (drink == this.drink.BLACK_SUGAR) {
-						this.factory.getSugarDispenser().release(200);
+						this.factory.getDisplay().info("Mixing ingredients.");
+						this.factory.getCoffeePowderDispenser().release(200);
+						this.factory.getWaterDispenser().release(3);
+						if (drink == this.drink.BLACK_SUGAR) {
+							this.factory.getSugarDispenser().release(200);
+						}
+						this.factory.getDisplay().info("Releasing drink.");
+						this.factory.getCupDispenser().release(1);
+						this.factory.getDrinkDispenser().release(1);
+						this.factory.getDisplay().info(
+								"Please, take your drink.");
+						this.factory.getDisplay().info(
+								"Insert coins and select a drink!");
+
 					}
-					this.factory.getDisplay().info("Releasing drink.");
-					this.factory.getCupDispenser().release(1);
-					this.factory.getDrinkDispenser().release(1);
-					this.factory.getDisplay().info("Please, take your drink.");
-					this.factory.getDisplay().info(
-							"Insert coins and select a drink!");
-
-					this.coins.clear();
 				}
 			}
 		}
+		this.coins.clear();
 	}
 }
