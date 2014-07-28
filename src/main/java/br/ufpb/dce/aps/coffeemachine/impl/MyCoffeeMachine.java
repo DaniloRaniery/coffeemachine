@@ -60,27 +60,47 @@ public class MyCoffeeMachine implements CoffeeMachine {
 		}
 			this.factory.getDisplay().info("Insert coins and select a drink!");
 	}
+	
+	public void cancelWithoutIngredients(){
+		Coin[] reverso = Coin.reverse();
+		int troco = this.coin.getValue();
+		for (Coin re : reverso) {
+			for (Coin aux : this.coins) {
+				if (aux == re) {
+					this.factory.getCashBox().release(aux);		
+				}
+			}
+		}
+		this.coins.clear();
+		this.factory.getDisplay().info("Insert coins and select a drink!");
+	}
 
 
 	public void select(Drink drink) {
 		this.factory.getCupDispenser().contains(1);
 		this.factory.getWaterDispenser().contains(3);
-		this.factory.getCoffeePowderDispenser().contains(200);
-		if(drink == this.drink.BLACK_SUGAR){
+		if(!this.factory.getCoffeePowderDispenser().contains(200)){
+			this.factory.getDisplay().warn("Out of Coffee Powder");
+			this.cancelWithoutIngredients();
+		}
+		else{
+			if (drink == this.drink.BLACK_SUGAR) {
 				this.factory.getSugarDispenser().contains(200);
+			}
+			this.factory.getDisplay().info("Mixing ingredients.");
+			this.factory.getCoffeePowderDispenser().release(200);
+			this.factory.getWaterDispenser().release(3);
+			if (drink == this.drink.BLACK_SUGAR) {
+				this.factory.getSugarDispenser().release(200);
+			}
+			this.factory.getDisplay().info("Releasing drink.");
+			this.factory.getCupDispenser().release(1);
+			this.factory.getDrinkDispenser().release(1);
+			this.factory.getDisplay().info("Please, take your drink.");
+			this.factory.getDisplay().info("Insert coins and select a drink!");
+
+			this.coins.clear();
 		}
-		this.factory.getDisplay().info("Mixing ingredients.");
-		this.factory.getCoffeePowderDispenser().release(200);
-		this.factory.getWaterDispenser().release(3);
-		if(drink == this.drink.BLACK_SUGAR){
-			this.factory.getSugarDispenser().release(200);
-		}
-		this.factory.getDisplay().info("Releasing drink.");
-		this.factory.getCupDispenser().release(1);
-		this.factory.getDrinkDispenser().release(1);
-		this.factory.getDisplay().info("Please, take your drink.");
-		this.factory.getDisplay().info("Insert coins and select a drink!");
 		
-		this.coins.clear();
 	}
 }
