@@ -19,10 +19,11 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	private CashBox cashBox;
 	private Coin coin;
 	private ArrayList<Coin> coins = new ArrayList<Coin>();
-	private Drink drink;
+	private Drinks drinks;
 
 	public MyCoffeeMachine(ComponentsFactory factory) {
 		this.factory = factory;
+		this.drinks = new Drinks();
 		this.factory.getDisplay().info("Insert coins and select a drink!");
 	}
 
@@ -47,27 +48,28 @@ public class MyCoffeeMachine implements CoffeeMachine {
 		if (this.coins.size() > 0) {
 			Coin[] reverso = Coin.reverse();
 			int troco = this.coin.getValue();
-			this.factory.getDisplay().warn("Cancelling drink. Please, get your coins.");
+			this.factory.getDisplay().warn(
+					"Cancelling drink. Please, get your coins.");
 			for (Coin re : reverso) {
 				for (Coin aux : this.coins) {
 					if (aux == re) {
-						this.factory.getCashBox().release(aux);		
+						this.factory.getCashBox().release(aux);
 					}
 				}
 			}
-			
+
 			this.coins.clear();
 		}
-			this.factory.getDisplay().info("Insert coins and select a drink!");
+		this.factory.getDisplay().info("Insert coins and select a drink!");
 	}
-	
-	public void cancelWithoutIngredients(){
+
+	public void cancelWithoutIngredients() {
 		Coin[] reverso = Coin.reverse();
 		int troco = this.coin.getValue();
 		for (Coin re : reverso) {
 			for (Coin aux : this.coins) {
 				if (aux == re) {
-					this.factory.getCashBox().release(aux);		
+					this.factory.getCashBox().release(aux);
 				}
 			}
 		}
@@ -75,51 +77,22 @@ public class MyCoffeeMachine implements CoffeeMachine {
 		this.factory.getDisplay().info("Insert coins and select a drink!");
 	}
 
-
 	public void select(Drink drink) {
-		if(!this.factory.getCupDispenser().contains(1)){
-			this.factory.getDisplay().warn("Out of Cup");
+		
+		this.drinks = this.drinks.getDrink(drink);
+		
+		if (!this.drinks.conferirIngredientes()){
 			this.cancelWithoutIngredients();
 		}
-		else{
-			if (!this.factory.getWaterDispenser().contains(3)) {
-				this.factory.getDisplay().warn("Out of Water");
-				this.cancelWithoutIngredients();
-			} else {
-				if (!this.factory.getCoffeePowderDispenser().contains(200)) {
-					this.factory.getDisplay().warn("Out of Coffee Powder");
-					this.cancelWithoutIngredients();
-				} else {					
-					if (drink == this.drink.BLACK_SUGAR
-							&& !this.factory.getSugarDispenser().contains(200)) {
-						this.factory.getDisplay().warn("Out of Sugar");
-						this.cancelWithoutIngredients();
-					} 
-					else {
-						if(drink == this.drink.WHITE){
-							this.factory.getCreamerDispenser().contains(150);
-						}
-						this.factory.getDisplay().info("Mixing ingredients.");
-						this.factory.getCoffeePowderDispenser().release(200);
-						this.factory.getWaterDispenser().release(3);
-						if (drink == this.drink.BLACK_SUGAR) {
-							this.factory.getSugarDispenser().release(200);
-						}
-						if (drink == this.drink.WHITE){
-							this.factory.getCreamerDispenser().release(150);
-						}
-						this.factory.getDisplay().info("Releasing drink.");
-						this.factory.getCupDispenser().release(1);
-						this.factory.getDrinkDispenser().release(1);
-						this.factory.getDisplay().info(
-								"Please, take your drink.");
-						this.factory.getDisplay().info(
-								"Insert coins and select a drink!");
-
-					}
-				}
-			}
+				
+		if(this.drinks == null){
+			this.cancelWithoutIngredients();
 		}
+		
+		this.drinks.Mix();
+	
+		this.drinks.release();
+		
 		this.coins.clear();
 	}
 }
