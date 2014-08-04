@@ -41,13 +41,14 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	}
 
 	public void cancel() throws CoffeeMachineException {
-		this.cancel(true);
-	}
-		
-	public void cancel(Boolean confirm) {
 		if (this.total == 0) {
 			throw new CoffeeMachineException("Não houve moeda inserida");
 		}
+		this.cancel(true);
+		
+	}
+		
+	public void cancel(Boolean confirm) throws CoffeeMachineException{
 		if (this.coins.size() > 0) {
 			if(confirm){
 				this.factory.getDisplay().warn(Messages.CANCEL);
@@ -87,8 +88,15 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	}
 	
 	public void select(Drink drink) {
+		
+		if(this.total < this.gerente.getValorDaBebida() || this.total == 0){
+			this.factory.getDisplay().warn(Messages.NO_ENOUGHT_MONEY);
+			this.cancel(false);
+			return;
+		}
 
-		this.gerente.iniciarDrink(drink);		
+		this.gerente.iniciarDrink(drink);
+		
 		if (!this.gerente.conferirIngredientes()) {
 			this.cancel(false);
 			return;
