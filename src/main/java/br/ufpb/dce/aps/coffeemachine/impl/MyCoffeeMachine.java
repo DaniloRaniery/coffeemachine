@@ -66,15 +66,14 @@ public class MyCoffeeMachine implements CoffeeMachine {
 		this.factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 	
-	public void PlanoDeLiberarTroco (double troco){
-		double trocoProvisorio = troco;
+	public boolean PlanoDeLiberarTroco (double troco){
 		this.reverso = Coin.reverse();
 		for(Coin c : this.reverso){
-			while(c.getValue() <= trocoProvisorio ){
-				this.factory.getCashBox().count (c);
-				trocoProvisorio -= c.getValue(); 
+			if(c.getValue() <= troco && this.factory.getCashBox().count (c) > 0){
+					troco -= c.getValue();
 			}
-		}
+		}		
+		return (troco == 0);
 	}
 	
 	public void liberarTroco (double troco){
@@ -106,7 +105,11 @@ public class MyCoffeeMachine implements CoffeeMachine {
 			return;
 		} 
 		if(this.total % this.gerente.getValorDaBebida() != 0 && this.total > this.gerente.getValorDaBebida()){
-			this.PlanoDeLiberarTroco(this.total - this.gerente.getValorDaBebida());
+			if(!this.PlanoDeLiberarTroco(this.total - this.gerente.getValorDaBebida())){
+				this.factory.getDisplay().warn(Messages.NO_ENOUGHT_CHANGE);
+				this.cancel(false);
+				return;
+			}
 		}
 				
 		this.gerente.Mix();
