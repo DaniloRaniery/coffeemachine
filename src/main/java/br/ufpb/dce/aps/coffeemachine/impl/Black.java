@@ -5,7 +5,8 @@ import br.ufpb.dce.aps.coffeemachine.Drink;
 
 public class Black extends Drinks {
 
-	public Black (Drink drink) {
+	public Black (Drink drink, ComponentsFactory factory) {
+		this.factory = factory;
 		if (drink == drink.BLACK) {
 			this.drink = drink.BLACK;
 		} else {
@@ -13,22 +14,10 @@ public class Black extends Drinks {
 		}
 	}
 
-	public void verificaAcucar() {
-		if (!this.factory.getSugarDispenser().contains(200)) {
-			this.factory.getDisplay().warn("Out of Sugar");
-			this.drink = null;
-		} else {
-			this.drink = drink.BLACK_SUGAR;
-		}
-	}
-
-	@Override
 	public void release() {
 		if (drink == drink.BLACK_SUGAR) {
 			this.factory.getSugarDispenser().release(200);
 		}
-		this.releaseFinal();
-
 	}
 
 }

@@ -11,20 +11,21 @@ import br.ufpb.dce.aps.coffeemachine.Dispenser;
 import br.ufpb.dce.aps.coffeemachine.Display;
 import br.ufpb.dce.aps.coffeemachine.Drink;
 import br.ufpb.dce.aps.coffeemachine.DrinkDispenser;
+import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class MyCoffeeMachine implements CoffeeMachine {
 
 	private int total, indice;
 	private ComponentsFactory factory;
-	private CashBox cashBox;
 	private Coin coin;
 	private ArrayList<Coin> coins = new ArrayList<Coin>();
-	private Drinks drinks;
+	private MeuGerenteDeBebidas gerente;
+	private Coin[] reverso = Coin.reverse();
 
 	public MyCoffeeMachine(ComponentsFactory factory) {
 		this.factory = factory;
-		this.drinks = new Drinks();
-		this.factory.getDisplay().info("Insert coins and select a drink!");
+		this.gerente = new MeuGerenteDeBebidas(this.factory);
+		this.factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 
 	public void insertCoin(Coin coin) throws CoffeeMachineException {
@@ -33,66 +34,80 @@ public class MyCoffeeMachine implements CoffeeMachine {
 			this.coin = coin;
 			this.coins.add(coin);
 			this.indice++;
-			this.factory.getDisplay().info(
-					"Total: US$ " + this.total / 100 + "." + this.total % 100);
+			this.factory.getDisplay().info("Total: US$ " + this.total / 100 + "." + this.total % 100);
 		} catch (NullPointerException e) {
 			throw new CoffeeMachineException("Moeda inválida");
 		}
 	}
 
 	public void cancel() throws CoffeeMachineException {
+		this.cancel(true);
+	}
+		
+	public void cancel(Boolean confirm) {
 		if (this.total == 0) {
 			throw new CoffeeMachineException("Não houve moeda inserida");
 		}
-
 		if (this.coins.size() > 0) {
-			Coin[] reverso = Coin.reverse();
-			int troco = this.coin.getValue();
-			this.factory.getDisplay().warn(
-					"Cancelling drink. Please, get your coins.");
-			for (Coin re : reverso) {
+			if(confirm){
+				this.factory.getDisplay().warn(Messages.CANCEL);
+			}
+			for (Coin re : this.reverso) {
 				for (Coin aux : this.coins) {
 					if (aux == re) {
 						this.factory.getCashBox().release(aux);
 					}
 				}
 			}
-
+			this.total = 0;
 			this.coins.clear();
 		}
-		this.factory.getDisplay().info("Insert coins and select a drink!");
+		this.factory.getDisplay().info(Messages.INSERT_COINS);
 	}
-
-	public void cancelWithoutIngredients() {
-		Coin[] reverso = Coin.reverse();
-		int troco = this.coin.getValue();
-		for (Coin re : reverso) {
-			for (Coin aux : this.coins) {
-				if (aux == re) {
-					this.factory.getCashBox().release(aux);
-				}
+	
+	public void PlanoDeLiberarTroco (double troco){
+		double trocoProvisorio = troco;
+		this.reverso = Coin.reverse();
+		for(Coin c : this.reverso){
+			while(c.getValue() <= trocoProvisorio ){
+				this.factory.getCashBox().count (c);
+				trocoProvisorio -= c.getValue(); 
 			}
 		}
-		this.coins.clear();
-		this.factory.getDisplay().info("Insert coins and select a drink!");
 	}
-
+	
+	public void liberarTroco (double troco){
+		this.reverso = Coin.reverse();
+		for(Coin c : this.reverso){
+			while(c.getValue() <= troco ){
+				this.factory.getCashBox().release (c);
+				troco -= c.getValue(); 
+			}
+		}
+	}
+	
 	public void select(Drink drink) {
-		
-		this.drinks = this.drinks.getDrink(drink);
-		
-		if (!this.drinks.conferirIngredientes()){
-			this.cancelWithoutIngredients();
+
+		this.gerente.iniciarDrink(drink);		
+		if (!this.gerente.conferirIngredientes()) {
+			this.cancel(false);
+			return;
+		}
+		if(!this.gerente.verificaAcucar()){ 
+			this.cancel(false);
+			return;
+		} 
+		if(this.total % this.gerente.getValorDaBebida() != 0 && this.total > this.gerente.getValorDaBebida()){
+			this.PlanoDeLiberarTroco(this.total - this.gerente.getValorDaBebida());
 		}
 				
-		if(this.drinks == null){
-			this.cancelWithoutIngredients();
+		this.gerente.Mix();
+		this.gerente.release();
+		
+		if(this.total % this.gerente.getValorDaBebida() != 0 && this.total > this.gerente.getValorDaBebida()){
+			this.liberarTroco(this.total - this.gerente.getValorDaBebida());
 		}
-		
-		this.drinks.Mix();
-	
-		this.drinks.release();
-		
+		this.factory.getDisplay().info(Messages.INSERT_COINS);
 		this.coins.clear();
 	}
 }
