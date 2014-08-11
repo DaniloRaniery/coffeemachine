@@ -3,7 +3,7 @@ package br.ufpb.dce.aps.coffeemachine.impl;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Drink;
 
-public class White extends Drinks {
+public class White extends Bebidas {
 
 	public White(Drink drink, ComponentsFactory factory) {
 		this.factory = factory;
