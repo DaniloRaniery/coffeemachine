@@ -14,7 +14,7 @@ public class MyCoffeeMachine implements CoffeeMachine {
 		
 	public MyCoffeeMachine(ComponentsFactory factory) {
 		this.factory = factory;		
-		this.factory.getDisplay().info(Messages.INSERT_COINS);
+		this.gerenteDeMaquina.apresentarMensagemInicial(factory);
 	}
 	
 	public void insertCoin(Coin coin) {

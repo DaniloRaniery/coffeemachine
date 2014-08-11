@@ -6,7 +6,7 @@ import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class GerenteDeBebidas {
 
-	private Bebidas drinks;
+	private Bebida drinks;
 	private double valor = 35;
 
 	public void iniciarDrink(ComponentsFactory factory, Drink drink) {
