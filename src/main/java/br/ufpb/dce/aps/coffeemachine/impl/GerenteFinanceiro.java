@@ -14,8 +14,10 @@ public class GerenteFinanceiro {
 
 	private Coin coin;
 	private ArrayList<Coin> coins = new ArrayList<Coin>();
+	private ArrayList<Coin> listaDeTroco = new ArrayList<Coin>();
 
-	public void inserirMoeda(ComponentsFactory factory, Coin coin) throws CoffeeMachineException {
+	public void inserirMoeda(ComponentsFactory factory, Coin coin)
+			throws CoffeeMachineException {
 		try {
 			this.total += coin.getValue();
 			this.coin = coin;
@@ -28,7 +30,8 @@ public class GerenteFinanceiro {
 		}
 	}
 
-	public void cancelar(ComponentsFactory factory) throws CoffeeMachineException {
+	public void cancelar(ComponentsFactory factory)
+			throws CoffeeMachineException {
 		if (this.total == 0) {
 			throw new CoffeeMachineException("Não houve moeda inserida");
 		}
@@ -52,39 +55,46 @@ public class GerenteFinanceiro {
 		factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 
-	public boolean planoDeLiberarTroco(ComponentsFactory factory, double troco) {
+	public boolean planoDeLiberarTroco(ComponentsFactory factory,
+			double valorDaBebida) {
+		double troco = this.total - valorDaBebida;
 		this.reverso = Coin.reverse();
-		for (Coin c : this.reverso) {
-			if (c.getValue() <= troco && factory.getCashBox().count(c) > 0) {
-				troco -= c.getValue();
+		for (Coin moeda : this.reverso) {
+			if (moeda.getValue() <= troco && factory.getCashBox().count(moeda) > 0) {
+				while (moeda.getValue() <= troco) {
+					troco = troco - moeda.getValue();
+					this.listaDeTroco.add(moeda);
+				}
 			}
 		}
 		return (troco == 0);
 	}
 
 	public void liberarTroco(ComponentsFactory factory, double valorDaBebida) {
-		double troco = this.total - valorDaBebida;
 		this.reverso = Coin.reverse();
-		for (Coin c : this.reverso) {
-			while (c.getValue() <= troco) {
-				factory.getCashBox().release(c);
-				troco -= c.getValue();
+		for (Coin moeda : this.reverso) {
+			for (Coin moedaDeTroco : this.listaDeTroco) {
+				if (moedaDeTroco == moeda) {
+					factory.getCashBox().release(moeda);
+				}
 			}
 		}
 	}
 
-	public boolean conferirDinheiroInserido(ComponentsFactory factory, double valorDaBebida) {
+	public boolean conferirDinheiroInserido(ComponentsFactory factory,
+			double valorDaBebida) {
 		if (this.total < valorDaBebida || this.total == 0) {
 			factory.getDisplay().warn(Messages.NO_ENOUGHT_MONEY);
-			this.liberarMoedas(factory,false);
+			this.liberarMoedas(factory, false);
 			return false;
 		}
 		return true;
 	}
 
-	public boolean conferirDisponibiliadadeDeTroco(ComponentsFactory factory, double valorDaBebida) {
+	public boolean conferirDisponibiliadadeDeTroco(ComponentsFactory factory,
+			double valorDaBebida) {
 		if (this.total % valorDaBebida != 0 && this.total > valorDaBebida) {
-			if (!this.planoDeLiberarTroco(factory ,this.total - valorDaBebida)) {
+			if (!this.planoDeLiberarTroco(factory, valorDaBebida)) {
 				factory.getDisplay().warn(Messages.NO_ENOUGHT_CHANGE);
 				this.liberarMoedas(factory, false);
 				return false;
