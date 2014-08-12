@@ -26,12 +26,13 @@ public class GerenteDeMaquina {
 			gerenteFinanceiro.liberarMoedas(factory, false);
 			return;
 		}
+		
 
 		if (!gerenteFinanceiro.conferirDisponibiliadadeDeTroco(factory,
 				this.gerenteDeBebidas.getValorDaBebida())) {
 			return;
 		}
-
+		
 		this.gerenteDeBebidas.Mix(factory);
 		this.gerenteDeBebidas.release(factory);
 

@@ -6,14 +6,14 @@ import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class GerenteDeBebidas {
 
-	private Bebida drinks;
+	private Bebida bebida;
 	private double valor = 35;
 
 	public void iniciarDrink(ComponentsFactory factory, Drink drink) {
 		if (drink == drink.BLACK || drink == drink.BLACK_SUGAR) {
-			this.drinks = new Black(drink, factory);
+			this.bebida = new Black(drink, factory);
 		} else {
-			this.drinks = new White(drink, factory);
+			this.bebida = new White(drink, factory);
 		}
 	}
 
@@ -27,9 +27,10 @@ public class GerenteDeBebidas {
 		} else if (!factory.getCoffeePowderDispenser().contains(200)) {
 			factory.getDisplay().warn(Messages.OUT_OF_COFFEE_POWDER);
 			return false;
-		} else if (this.drinks.getDrink() == Drink.WHITE
-				|| this.drinks.getDrink() == Drink.WHITE_SUGAR) {
+		} else if (this.bebida.getDrink() == Drink.WHITE
+				|| this.bebida.getDrink() == Drink.WHITE_SUGAR) {
 			if (!factory.getCreamerDispenser().contains(150)) {
+				factory.getDisplay().warn(Messages.OUT_OF_CREAMER);
 				return false;
 			}
 		}
@@ -38,8 +39,8 @@ public class GerenteDeBebidas {
 
 	public boolean verificaAcucar(ComponentsFactory factory) {
 
-		if (this.drinks.getDrink() == Drink.BLACK_SUGAR
-				|| this.drinks.getDrink() == Drink.WHITE_SUGAR) {
+		if (this.bebida.getDrink() == Drink.BLACK_SUGAR
+				|| this.bebida.getDrink() == Drink.WHITE_SUGAR) {
 			if (!factory.getSugarDispenser().contains(200)) {
 				factory.getDisplay().warn(Messages.OUT_OF_SUGAR);
 				return false;
@@ -55,7 +56,7 @@ public class GerenteDeBebidas {
 	}
 
 	public void release(ComponentsFactory factory) {
-		this.drinks.release();
+		this.bebida.release();
 		factory.getDisplay().info(Messages.RELEASING);
 		factory.getCupDispenser().release(1);
 		factory.getDrinkDispenser().release(1);

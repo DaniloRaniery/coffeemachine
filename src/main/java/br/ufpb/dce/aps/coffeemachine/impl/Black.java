@@ -19,5 +19,4 @@ public class Black extends Bebida {
 			this.factory.getSugarDispenser().release(200);
 		}
 	}
-
 }
