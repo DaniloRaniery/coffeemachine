@@ -18,7 +18,7 @@ public class GerenteDeMaquina {
 
 		this.gerenteDeBebidas.iniciarDrink(factory, drink);
 
-		if (!this.gerenteDeBebidas.conferirIngredientes(factory)) {
+		if (!this.gerenteDeBebidas.conferirIngredientes(factory,drink)) {
 			gerenteFinanceiro.liberarMoedas(factory, false);
 			return;
 		}
