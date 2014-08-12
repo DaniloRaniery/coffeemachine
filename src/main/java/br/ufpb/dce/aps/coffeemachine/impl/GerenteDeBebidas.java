@@ -21,10 +21,10 @@ public class GerenteDeBebidas {
 		if (!factory.getCupDispenser().contains(1)) {
 			factory.getDisplay().warn(Messages.OUT_OF_CUP);
 			return false;
-		} else if (!factory.getWaterDispenser().contains(3)) {
+		} else if (!factory.getWaterDispenser().contains(100)) {
 			factory.getDisplay().warn(Messages.OUT_OF_WATER);
 			return false;
-		} else if (!factory.getCoffeePowderDispenser().contains(200)) {
+		} else if (!factory.getCoffeePowderDispenser().contains(15)) {
 			factory.getDisplay().warn(Messages.OUT_OF_COFFEE_POWDER);
 			return false;
 		} else if (this.bebida.getDrink() == Drink.WHITE
@@ -51,15 +51,15 @@ public class GerenteDeBebidas {
 
 	public void Mix(ComponentsFactory factory) {
 		factory.getDisplay().info(Messages.MIXING);
-		factory.getCoffeePowderDispenser().release(200);
-		factory.getWaterDispenser().release(3);
+		factory.getCoffeePowderDispenser().release(15);
+		factory.getWaterDispenser().release(100);
 	}
 
 	public void release(ComponentsFactory factory) {
 		this.bebida.release();
 		factory.getDisplay().info(Messages.RELEASING);
 		factory.getCupDispenser().release(1);
-		factory.getDrinkDispenser().release(1);
+		factory.getDrinkDispenser().release(100.0);
 		factory.getDisplay().info(Messages.TAKE_DRINK);
 
 	}
