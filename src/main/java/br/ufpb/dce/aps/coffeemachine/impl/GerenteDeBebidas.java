@@ -95,6 +95,7 @@ public class GerenteDeBebidas {
 		}
 		if (poDeSopa > 0) {
 			if (!factory.getBouillonDispenser().contains(poDeSopa)) {
+				factory.getDisplay().warn(Messages.OUT_OF_BOUILLON_POWDER);
 				return false;
 			}
 		}
