@@ -47,4 +47,5 @@ public class GerenteDeMaquina {
 		factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 
+
 }

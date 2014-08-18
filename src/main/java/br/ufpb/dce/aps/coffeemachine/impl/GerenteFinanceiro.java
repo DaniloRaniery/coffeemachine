@@ -11,22 +11,28 @@ public class GerenteFinanceiro {
 
 	private Coin[] reverso = Coin.reverse();
 	private int total, indice;
-
+	private String modo = "";
 	private Coin coin;
 	private ArrayList<Coin> coins = new ArrayList<Coin>();
 	private ArrayList<Coin> listaDeTroco = new ArrayList<Coin>();
 
 	public void inserirMoeda(ComponentsFactory factory, Coin coin)
 			throws CoffeeMachineException {
-		try {
-			this.total += coin.getValue();
-			this.coin = coin;
-			this.coins.add(coin);
-			this.indice++;
-			factory.getDisplay().info(
-					"Total: US$ " + this.total / 100 + "." + this.total % 100);
-		} catch (NullPointerException e) {
-			throw new CoffeeMachineException("Moeda inválida");
+		if(this.modo.equals("cracha")){
+			factory.getDisplay().warn(Messages.CAN_NOT_INSERT_COINS);
+			this.liberarMoedasCracha(factory, coin);
+			return;
+		}
+		else{
+			try {
+				this.total += coin.getValue();
+				this.coin = coin;
+				this.coins.add(coin);
+				this.indice++;
+				factory.getDisplay().info("Total: US$ " + this.total / 100 + "." + this.total % 100);
+			} catch (NullPointerException e) {
+				throw new CoffeeMachineException("Moeda inválida");
+			}
 		}
 	}
 
@@ -53,6 +59,10 @@ public class GerenteFinanceiro {
 		this.total = 0;
 		this.zerarMoedas();
 		factory.getDisplay().info(Messages.INSERT_COINS);
+	}
+	
+	public void liberarMoedasCracha(ComponentsFactory factory, Coin coin){
+		factory.getCashBox().release(coin);
 	}
 
 	public boolean planoDeLiberarTroco(ComponentsFactory factory,
@@ -94,11 +104,11 @@ public class GerenteFinanceiro {
 
 	public boolean conferirDisponibiliadadeDeTroco(ComponentsFactory factory,
 			double valorDaBebida) {
-			if (!this.planoDeLiberarTroco(factory, valorDaBebida)) {
-				factory.getDisplay().warn(Messages.NO_ENOUGHT_CHANGE);
-				this.liberarMoedas(factory, false);
-				return false;
-			}
+		if (!this.planoDeLiberarTroco(factory, valorDaBebida)) {
+			factory.getDisplay().warn(Messages.NO_ENOUGHT_CHANGE);
+			this.liberarMoedas(factory, false);
+			return false;
+		}
 		return true;
 	}
 
@@ -109,5 +119,9 @@ public class GerenteFinanceiro {
 
 	public int getTotal() {
 		return total;
+	}
+
+	public void setModo(String modo) {
+		this.modo = modo;
 	}
 }
