@@ -11,12 +11,11 @@ public class GerenteDeMaquina {
 	public void iniciarPedidoDeBebida(ComponentsFactory factory,
 			GerenteFinanceiro gerenteFinanceiro, Drink drink) {
 
+		this.gerenteDeBebidas.iniciarDrink(factory, drink);
 		if (!gerenteFinanceiro.conferirDinheiroInserido(factory,
 				this.gerenteDeBebidas.getValorDaBebida())) {
 			return;
 		}
-
-		this.gerenteDeBebidas.iniciarDrink(factory, drink);
 
 		if (!this.gerenteDeBebidas.conferirIngredientes(factory,drink)) {
 			gerenteFinanceiro.liberarMoedas(factory, false);
@@ -27,13 +26,12 @@ public class GerenteDeMaquina {
 			return;
 		}
 		
-
 		if (!gerenteFinanceiro.conferirDisponibiliadadeDeTroco(factory,
 				this.gerenteDeBebidas.getValorDaBebida())) {
 			return;
 		}
 		
-		this.gerenteDeBebidas.Mix(factory);
+		this.gerenteDeBebidas.Mix(factory, drink);
 		this.gerenteDeBebidas.release(factory);
 
 		if (gerenteFinanceiro.getTotal()
