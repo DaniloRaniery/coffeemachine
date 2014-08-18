@@ -60,8 +60,9 @@ public class GerenteFinanceiro {
 		double troco = this.total - valorDaBebida;
 		this.reverso = Coin.reverse();
 		for (Coin moeda : this.reverso) {
-			if (moeda.getValue() <= troco && factory.getCashBox().count(moeda) > 0) {
-				while (moeda.getValue() <= troco) {
+			if (moeda.getValue() <= troco) {
+				int count = factory.getCashBox().count(moeda);
+				while (moeda.getValue() <= troco && count > 0) {
 					troco = troco - moeda.getValue();
 					this.listaDeTroco.add(moeda);
 				}
@@ -93,18 +94,17 @@ public class GerenteFinanceiro {
 
 	public boolean conferirDisponibiliadadeDeTroco(ComponentsFactory factory,
 			double valorDaBebida) {
-		if (this.total % valorDaBebida != 0 && this.total > valorDaBebida) {
 			if (!this.planoDeLiberarTroco(factory, valorDaBebida)) {
 				factory.getDisplay().warn(Messages.NO_ENOUGHT_CHANGE);
 				this.liberarMoedas(factory, false);
 				return false;
 			}
-		}
 		return true;
 	}
 
 	public void zerarMoedas() {
 		this.coins.clear();
+		this.total = 0;
 	}
 
 	public int getTotal() {

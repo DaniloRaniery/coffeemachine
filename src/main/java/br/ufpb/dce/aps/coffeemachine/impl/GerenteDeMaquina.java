@@ -17,7 +17,7 @@ public class GerenteDeMaquina {
 			return;
 		}
 
-		if (!this.gerenteDeBebidas.conferirIngredientes(factory,drink)) {
+		if (!this.gerenteDeBebidas.conferirIngredientes(factory, drink)) {
 			gerenteFinanceiro.liberarMoedas(factory, false);
 			return;
 		}
@@ -25,29 +25,25 @@ public class GerenteDeMaquina {
 			gerenteFinanceiro.liberarMoedas(factory, false);
 			return;
 		}
-		
+
 		if (!gerenteFinanceiro.conferirDisponibiliadadeDeTroco(factory,
 				this.gerenteDeBebidas.getValorDaBebida())) {
 			return;
 		}
-		
+
 		this.gerenteDeBebidas.Mix(factory, drink);
 		this.gerenteDeBebidas.release(factory);
 
-		if (gerenteFinanceiro.getTotal()
-				% this.gerenteDeBebidas.getValorDaBebida() != 0
-				&& gerenteFinanceiro.getTotal() > this.gerenteDeBebidas
-						.getValorDaBebida()) {
-			gerenteFinanceiro.liberarTroco(factory,
-					this.gerenteDeBebidas.getValorDaBebida());
+		if (gerenteFinanceiro.getTotal() >= this.gerenteDeBebidas.getValorDaBebida()) {
+					gerenteFinanceiro.liberarTroco(factory, this.gerenteDeBebidas.getValorDaBebida());
 		}
 
 		factory.getDisplay().info(Messages.INSERT_COINS);
 
 		gerenteFinanceiro.zerarMoedas();
 	}
-	
-	public void apresentarMensagemInicial(ComponentsFactory factory){
+
+	public void apresentarMensagemInicial(ComponentsFactory factory) {
 		factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 
