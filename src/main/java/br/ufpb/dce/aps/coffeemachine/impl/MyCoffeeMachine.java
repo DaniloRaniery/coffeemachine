@@ -4,7 +4,6 @@ import br.ufpb.dce.aps.coffeemachine.CoffeeMachine;
 import br.ufpb.dce.aps.coffeemachine.Coin;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Drink;
-import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class MyCoffeeMachine implements CoffeeMachine {
 
@@ -12,9 +11,7 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	private GerenteFinanceiro gerenteFinanceiro =  new GerenteFinanceiro(); 
 	private GerenteDeMaquina gerenteDeMaquina = new GerenteDeMaquina();
 		
-	public MyCoffeeMachine(ComponentsFactory factory) {
-		this.factory = factory;		
-		this.gerenteDeMaquina.apresentarMensagemInicial(factory);
+	public MyCoffeeMachine() {
 	}
 	
 	public void insertCoin(Coin coin) {
@@ -27,5 +24,10 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	
 	public void select(Drink drink) {		
 		this.gerenteDeMaquina.iniciarPedidoDeBebida(this.factory, this.gerenteFinanceiro, drink);
+	}
+
+	public void setFactory(ComponentsFactory factory) {
+		this.factory = factory;		
+		this.gerenteDeMaquina.apresentarMensagemInicial(factory);
 	}
 }
