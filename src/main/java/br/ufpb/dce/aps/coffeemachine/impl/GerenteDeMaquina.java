@@ -9,10 +9,18 @@ public class GerenteDeMaquina {
 	private GerenteDeBebidas gerenteDeBebidas = new GerenteDeBebidas();
 	private static String modo = "";
 	private int cracha = 0;
-
 	public void iniciarPedidoDeBebida(ComponentsFactory factory,
 			GerenteFinanceiro gerenteFinanceiro, Drink drink) {
-		this.cracha = 0;
+		if (modo.equals("cracha")){
+			iniciarPedidoComCracha(factory, drink);
+		}else{
+			iniciarPedidoComMoedas(factory, gerenteFinanceiro, drink);
+		}
+		
+	}
+		
+	public void iniciarPedidoComMoedas(ComponentsFactory factory,
+			GerenteFinanceiro gerenteFinanceiro, Drink drink){
 		this.gerenteDeBebidas.iniciarDrink(factory, drink);
 		if (!gerenteFinanceiro.conferirDinheiroInserido(factory,
 				this.gerenteDeBebidas.getValorDaBebida())) {
@@ -44,8 +52,25 @@ public class GerenteDeMaquina {
 		factory.getDisplay().info(Messages.INSERT_COINS);
 		GerenteDeMaquina.setModo (" ");
 		
-		gerenteFinanceiro.zerarMoedas();
+		gerenteFinanceiro.zerarMoedas();	
+	}
+	
+	public void iniciarPedidoComCracha(ComponentsFactory factory, Drink drink){
+		this.gerenteDeBebidas.iniciarDrink(factory, drink);
 		
+		if (!this.gerenteDeBebidas.conferirIngredientes(factory, drink)) {
+			return;
+		}
+		if (!this.gerenteDeBebidas.verificaAcucar(factory)) {
+			return;
+		}
+		factory.getPayrollSystem().debit(gerenteDeBebidas.getValorDaBebida(), this.cracha);
+		
+		this.gerenteDeBebidas.Mix(factory, drink);
+		this.gerenteDeBebidas.release(factory);
+
+		factory.getDisplay().info(Messages.INSERT_COINS);
+		GerenteDeMaquina.setModo (" ");
 	}
 
 	public void iniciarComMoedas(ComponentsFactory factory) {

@@ -7,8 +7,8 @@ import br.ufpb.dce.aps.coffeemachine.Messages;
 public class GerenteDeBebidas {
 
 	private Bebida bebida;
-	private double valor = 35;
-	private double valorBouillon = 25;
+	private int valor = 35;
+	private int valorBouillon = 25;
 
 	public void iniciarDrink(ComponentsFactory factory, Drink drink) {
 		if (drink == drink.BLACK || drink == drink.BLACK_SUGAR) {
@@ -64,7 +64,7 @@ public class GerenteDeBebidas {
 
 	}
 
-	public double getValorDaBebida() {
+	public int getValorDaBebida() {
 		return this.valor;
 	}
 
