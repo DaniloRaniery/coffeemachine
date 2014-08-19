@@ -11,14 +11,14 @@ public class GerenteFinanceiro {
 
 	private Coin[] reverso = Coin.reverse();
 	private int total, indice;
-	private String modo = "";
+	
 	private Coin coin;
 	private ArrayList<Coin> coins = new ArrayList<Coin>();
 	private ArrayList<Coin> listaDeTroco = new ArrayList<Coin>();
 
-	public void inserirMoeda(ComponentsFactory factory, Coin coin)
+	public void inserirMoeda(ComponentsFactory factory, Coin coin, String modo)
 			throws CoffeeMachineException {
-		if(this.modo.equals("cracha")){
+		if(modo.equals("cracha")){
 			factory.getDisplay().warn(Messages.CAN_NOT_INSERT_COINS);
 			this.liberarMoedasCracha(factory, coin);
 			return;
@@ -58,6 +58,7 @@ public class GerenteFinanceiro {
 		}
 		this.total = 0;
 		this.zerarMoedas();
+		GerenteDeMaquina.setModo (" ");
 		factory.getDisplay().info(Messages.INSERT_COINS);
 	}
 	
@@ -119,9 +120,5 @@ public class GerenteFinanceiro {
 
 	public int getTotal() {
 		return total;
-	}
-
-	public void setModo(String modo) {
-		this.modo = modo;
 	}
 }

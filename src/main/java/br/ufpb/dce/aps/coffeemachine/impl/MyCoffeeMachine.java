@@ -16,7 +16,7 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	}
 	
 	public void insertCoin(Coin coin) {
-		this.gerenteFinanceiro.inserirMoeda(this.factory, coin);
+		this.gerenteFinanceiro.inserirMoeda(this.factory, coin, this.gerenteDeMaquina.getModo());
 	}
 
 	public void cancel(){
@@ -29,11 +29,10 @@ public class MyCoffeeMachine implements CoffeeMachine {
 
 	public void setFactory(ComponentsFactory factory) {
 		this.factory = factory;		
-		this.gerenteDeMaquina.apresentarMensagemInicial(factory);
+		this.gerenteDeMaquina.iniciarComMoedas(factory);
 	}
 
 	public void readBadge(int badgeCode) {
-		this.factory.getDisplay().info(Messages.BADGE_READ);
-		this.gerenteFinanceiro.setModo("cracha");
+		this.gerenteDeMaquina.iniciarComCracha(factory, this.gerenteFinanceiro, badgeCode);
 	}
 }
