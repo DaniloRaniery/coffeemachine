@@ -27,4 +27,30 @@ public class Black extends Bebida {
 		factory.getDisplay().info(Messages.RELEASING);
 		factory.getCupDispenser().release(this.copo);
 	}
+	
+	public boolean conferirIngredientes(ComponentsFactory factory, Button drink) {
+		if (!factory.getCupDispenser().contains(this.copo)) {
+				factory.getDisplay().warn(Messages.OUT_OF_CUP);
+				return false;
+		}
+		
+		if (!factory.getWaterDispenser().contains(this.agua)) {
+			factory.getDisplay().warn(Messages.OUT_OF_WATER);
+			return false;
+		}
+		
+		if (!factory.getCoffeePowderDispenser().contains(this.poDeCafe)) {
+				factory.getDisplay().warn(Messages.OUT_OF_COFFEE_POWDER);
+				return false;
+		}
+		
+		if(this.button == Button.BUTTON_3){
+			if (!factory.getSugarDispenser().contains(this.acucar)) {
+				factory.getDisplay().warn(Messages.OUT_OF_SUGAR);
+				return false;
+			}	
+		}
+	
+		return true;
+	}
 }

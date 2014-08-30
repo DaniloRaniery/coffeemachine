@@ -1,7 +1,10 @@
 package br.ufpb.dce.aps.coffeemachine.impl;
 
+import java.util.HashMap;
+
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Button;
+import br.ufpb.dce.aps.coffeemachine.Dispenser;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 import br.ufpb.dce.aps.coffeemachine.Recipe;
 
@@ -10,6 +13,8 @@ public class GerenteDeMaquina {
 	private GerenteDeBebidas gerenteDeBebidas = new GerenteDeBebidas();
 	private static String modo = "";
 	private int cracha = 0;
+	private HashMap<String, Dispenser> dispensa = new HashMap<String, Dispenser>();
+	
 
 	public void iniciarPedidoDeBebida(ComponentsFactory factory,
 			GerenteFinanceiro gerenteFinanceiro, Button drink) {
@@ -18,14 +23,13 @@ public class GerenteDeMaquina {
 		} else {
 			this.iniciarPedidoComMoedas(factory, gerenteFinanceiro, drink);
 		}
-
 	}
 
 	public void iniciarPedidoComMoedas(ComponentsFactory factory,
 			GerenteFinanceiro gerenteFinanceiro, Button button) {
 
 		if (!this.gerenteDeBebidas.getChave()) {
-			this.gerenteDeBebidas.iniciarDrink(button);
+			this.gerenteDeBebidas.iniciarDrink(button, this.dispensa);
 		}
 
 		if (!gerenteFinanceiro.conferirDinheiroInserido(factory,
@@ -37,13 +41,7 @@ public class GerenteDeMaquina {
 			gerenteFinanceiro.liberarMoedas(factory, false);
 			return;
 		}
-		if (!(button == Button.BUTTON_6)) {
-			if (!this.gerenteDeBebidas.verificaAcucar(factory)) {
-				gerenteFinanceiro.liberarMoedas(factory, false);
-				return;
-			}
-		}
-
+		
 		if (!gerenteFinanceiro.conferirDisponibiliadadeDeTroco(factory,
 				this.gerenteDeBebidas.getValorDaBebida(button))) {
 			return;
@@ -64,16 +62,12 @@ public class GerenteDeMaquina {
 	}
 
 	public void iniciarPedidoComCracha(ComponentsFactory factory, Button button) {
-		this.gerenteDeBebidas.iniciarDrink(button);
+		this.gerenteDeBebidas.iniciarDrink(button, this.dispensa);
 
 		if (!this.gerenteDeBebidas.conferirIngredientes(factory, button)) {
 			return;
 		}
-		if (!(button == Button.BUTTON_6)) {
-			if (!this.gerenteDeBebidas.verificaAcucar(factory)) {
-				return;
-			}
-		}
+		
 		if (!factory.getPayrollSystem().debit(
 				gerenteDeBebidas.getValorDaBebida(button), this.cracha)) {
 			factory.getDisplay().warn(Messages.UNKNOWN_BADGE_CODE);
@@ -154,6 +148,10 @@ public class GerenteDeMaquina {
 	public void mudarReceita(Button drink, Recipe recipe) {
 		this.gerenteDeBebidas.mudarReceita(drink, recipe);
 
+	}
+
+	public void adicionarDispensa(String ingredient, Dispenser dispenser) {
+		this.dispensa.put(ingredient, dispenser);
 	}
 
 }
