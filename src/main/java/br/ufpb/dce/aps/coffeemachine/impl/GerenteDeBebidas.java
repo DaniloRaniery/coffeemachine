@@ -10,6 +10,7 @@ public class GerenteDeBebidas {
 	private Bebida bebida;
 	private int valorBlack = 35, valorBlackWithSugar = 35, valorWhite = 35, valorWhiteWithSugar = 35;
 	private int valorBouillon = 25;
+	private boolean chave = false;
 
 	public void iniciarDrink(Button button) {
 		if (button == Button.BUTTON_1 || button == Button.BUTTON_3) {
@@ -159,7 +160,9 @@ public class GerenteDeBebidas {
 	}
 
 	public void mudarReceita(Button drink, Recipe recipe) {
+		
 		this.iniciarDrink(drink);
+		
 		if(null != recipe.getIngredientQuantity("Water")){
 			this.bebida.setAgua(recipe.getIngredientQuantity("Water"));
 		}
@@ -170,6 +173,18 @@ public class GerenteDeBebidas {
 			this.setPrecoDaBebida(drink,recipe.getPriceCents());
 		}
 		
+		this.chave = true;
+	}
+	
+	public boolean getChave(){
+		return this.chave;
+	}
+	
+	public void setChave(Boolean novaChave){
+		this.chave = novaChave;
 	}
 
+	public Bebida getDrink(){
+		return this.bebida;
+	}
 }

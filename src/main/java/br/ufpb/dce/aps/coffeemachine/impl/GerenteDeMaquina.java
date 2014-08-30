@@ -22,7 +22,11 @@ public class GerenteDeMaquina {
 		
 	public void iniciarPedidoComMoedas(ComponentsFactory factory,
 			GerenteFinanceiro gerenteFinanceiro, Button button){
-		this.gerenteDeBebidas.iniciarDrink(button);
+		
+		if(!this.gerenteDeBebidas.getChave()){
+			this.gerenteDeBebidas.iniciarDrink(button);
+		}
+		
 		if (!gerenteFinanceiro.conferirDinheiroInserido(factory,
 				this.gerenteDeBebidas.getValorDaBebida(button))) {
 			return;
@@ -51,8 +55,8 @@ public class GerenteDeMaquina {
 		}
 
 		this.reIniciar(factory);
-		
-		gerenteFinanceiro.zerarMoedas();	
+		gerenteFinanceiro.zerarMoedas();
+		this.gerenteDeBebidas.setChave(false);
 	}
 	
 	public void iniciarPedidoComCracha(ComponentsFactory factory, Button button){

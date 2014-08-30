@@ -8,8 +8,8 @@ public class Bouillon extends Bebida {
 	
 	public Bouillon (Button button) {
 		this.button = Button.BUTTON_5;
-		this.agua = 100.0;
-		this.poDeSopa = 10;
+		this.setAgua(100);
+		this.setPoDeSopa(10);
 	}
 
 	@Override

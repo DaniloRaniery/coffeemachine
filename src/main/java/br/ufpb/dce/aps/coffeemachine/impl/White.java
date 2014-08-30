@@ -12,9 +12,9 @@ public class White extends Bebida {
 		} else {
 			this.button = Button.BUTTON_4;
 		}
-		this.agua = 80;
-		this.creme = 20;
-		this.poDeCafe = 15;
+		this.setAgua(80);
+		this.setCreme(20);
+		this.setPoDeCafe(15);
 	}
 
 	public void release(ComponentsFactory factory) {

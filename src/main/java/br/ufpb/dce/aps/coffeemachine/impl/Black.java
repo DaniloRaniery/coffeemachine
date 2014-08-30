@@ -5,15 +5,16 @@ import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class Black extends Bebida {
-
+	
 	public Black(Button button) {
 		if (button == Button.BUTTON_1) {
 			this.button = Button.BUTTON_1;
 		} else {
 			this.button = Button.BUTTON_3;
 		}
-		this.poDeCafe = 15;
-		this.agua = 100;
+		this.setPoDeCafe(15);
+		this.setAgua(100);
+
 	}
 
 	public void release(ComponentsFactory factory) {
