@@ -49,8 +49,7 @@ public class GerenteDeMaquina {
 					gerenteFinanceiro.liberarTroco(factory, this.gerenteDeBebidas.getValorDaBebida());
 		}
 
-		factory.getDisplay().info(Messages.INSERT_COINS);
-		GerenteDeMaquina.setModo (" ");
+		this.reIniciar(factory);
 		
 		gerenteFinanceiro.zerarMoedas();	
 	}
@@ -64,13 +63,16 @@ public class GerenteDeMaquina {
 		if (!this.gerenteDeBebidas.verificaAcucar(factory)) {
 			return;
 		}
-		factory.getPayrollSystem().debit(gerenteDeBebidas.getValorDaBebida(), this.cracha);
+		if(!factory.getPayrollSystem().debit(gerenteDeBebidas.getValorDaBebida(), this.cracha)){
+			factory.getDisplay().warn(Messages.UNKNOWN_BADGE_CODE);
+			this.reIniciar(factory);
+			return;
+		}
 		
 		this.gerenteDeBebidas.Mix(factory, drink);
 		this.gerenteDeBebidas.release(factory);
-
-		factory.getDisplay().info(Messages.INSERT_COINS);
-		GerenteDeMaquina.setModo (" ");
+		
+		this.reIniciar(factory);
 	}
 
 	public void iniciarComMoedas(ComponentsFactory factory) {
@@ -97,6 +99,11 @@ public class GerenteDeMaquina {
 	
 	public String getModo(){
 		return modo;
+	}
+	
+	public void reIniciar(ComponentsFactory factory){
+		factory.getDisplay().info(Messages.INSERT_COINS);
+		GerenteDeMaquina.setModo (" ");
 	}
 
 }
