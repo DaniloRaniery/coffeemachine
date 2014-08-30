@@ -5,7 +5,7 @@ import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class Black extends Bebida {
-
+	
 	public Black (Button button) {
 		if (button == Button.BUTTON_1) {
 			this.button = Button.BUTTON_1;

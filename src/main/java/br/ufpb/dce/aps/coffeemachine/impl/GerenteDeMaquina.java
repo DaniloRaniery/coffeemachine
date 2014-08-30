@@ -23,7 +23,7 @@ public class GerenteDeMaquina {
 			GerenteFinanceiro gerenteFinanceiro, Button button){
 		this.gerenteDeBebidas.iniciarDrink(factory, button);
 		if (!gerenteFinanceiro.conferirDinheiroInserido(factory,
-				this.gerenteDeBebidas.getValorDaBebida())) {
+				this.gerenteDeBebidas.getValorDaBebida(button))) {
 			return;
 		}
 
@@ -37,7 +37,7 @@ public class GerenteDeMaquina {
 		}
 
 		if (!gerenteFinanceiro.conferirDisponibiliadadeDeTroco(factory,
-			this.gerenteDeBebidas.getValorDaBebida())) {
+			this.gerenteDeBebidas.getValorDaBebida(button))) {
 			return;
 		}
 	
@@ -45,8 +45,8 @@ public class GerenteDeMaquina {
 		this.gerenteDeBebidas.Mix(factory, button);
 		this.gerenteDeBebidas.release(factory);
 
-		if (gerenteFinanceiro.getTotal() >= this.gerenteDeBebidas.getValorDaBebida()) {
-					gerenteFinanceiro.liberarTroco(factory, this.gerenteDeBebidas.getValorDaBebida());
+		if (gerenteFinanceiro.getTotal() >= this.gerenteDeBebidas.getValorDaBebida(button)) {
+					gerenteFinanceiro.liberarTroco(factory, this.gerenteDeBebidas.getValorDaBebida(button));
 		}
 
 		this.reIniciar(factory);
@@ -63,7 +63,7 @@ public class GerenteDeMaquina {
 		if (!this.gerenteDeBebidas.verificaAcucar(factory)) {
 			return;
 		}
-		if(!factory.getPayrollSystem().debit(gerenteDeBebidas.getValorDaBebida(), this.cracha)){
+		if(!factory.getPayrollSystem().debit(gerenteDeBebidas.getValorDaBebida(button), this.cracha)){
 			factory.getDisplay().warn(Messages.UNKNOWN_BADGE_CODE);
 			this.reIniciar(factory);
 			return;
@@ -76,11 +76,15 @@ public class GerenteDeMaquina {
 	}
 
 	public void iniciar(ComponentsFactory factory) {	
-			factory.getButtonDisplay().show("Black: $0.35", "White: $0.35",
-					"Black with sugar: $0.35", "White with sugar: $0.35",
-					"Bouillon: $0.25", null, null);
+			this.mensagemInicial(factory);
 			factory.getDisplay().info(Messages.INSERT_COINS);
 			GerenteDeMaquina.setModo("moedas");
+	}
+	
+	public void mensagemInicial(ComponentsFactory factory){
+		factory.getButtonDisplay().show("Black: $0."+this.gerenteDeBebidas.getValorBlack(), "White: $0."+this.gerenteDeBebidas.getValorWhite(),
+				"Black with sugar: $0."+this.gerenteDeBebidas.getValorBlackWithSugar(), "White with sugar: $0."+this.gerenteDeBebidas.getValorWhiteWithSugar(),
+				"Bouillon: $0."+this.gerenteDeBebidas.getValorBouillon(), null, null);
 	}
 	
 	public void iniciarComCracha(ComponentsFactory factory, GerenteFinanceiro gerenteAuxiliar, int cracha) {
@@ -107,6 +111,10 @@ public class GerenteDeMaquina {
 	public void reIniciar(ComponentsFactory factory){
 		factory.getDisplay().info(Messages.INSERT_COINS);
 		GerenteDeMaquina.setModo (" ");
+	}
+
+	public void setPrecoDaBebida(Button drink, int priceCents) {
+		this.gerenteDeBebidas.setPrecoDaBebida(drink, priceCents);	
 	}
 
 }

@@ -34,4 +34,10 @@ public class MyCoffeeMachine implements CoffeeMachine {
 	public void readBadge(int badgeCode) {
 		this.gerenteDeMaquina.iniciarComCracha(factory, this.gerenteFinanceiro, badgeCode);
 	}
+
+	public void setPrice(Button drink, int priceCents) {
+		this.gerenteDeMaquina.setPrecoDaBebida(drink,priceCents);
+		this.gerenteDeMaquina.mensagemInicial(factory);
+		
+	}
 }

@@ -6,6 +6,7 @@ import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class White extends Bebida {
 
+	
 	public White(Button button) {
 		if (button == Button.BUTTON_2) {
 			this.button = Button.BUTTON_2;
