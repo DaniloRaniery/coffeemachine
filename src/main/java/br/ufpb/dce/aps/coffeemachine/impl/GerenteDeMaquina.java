@@ -3,6 +3,7 @@ package br.ufpb.dce.aps.coffeemachine.impl;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Button;
 import br.ufpb.dce.aps.coffeemachine.Messages;
+import br.ufpb.dce.aps.coffeemachine.Recipe;
 
 public class GerenteDeMaquina {
 
@@ -21,7 +22,7 @@ public class GerenteDeMaquina {
 		
 	public void iniciarPedidoComMoedas(ComponentsFactory factory,
 			GerenteFinanceiro gerenteFinanceiro, Button button){
-		this.gerenteDeBebidas.iniciarDrink(factory, button);
+		this.gerenteDeBebidas.iniciarDrink(button);
 		if (!gerenteFinanceiro.conferirDinheiroInserido(factory,
 				this.gerenteDeBebidas.getValorDaBebida(button))) {
 			return;
@@ -55,7 +56,7 @@ public class GerenteDeMaquina {
 	}
 	
 	public void iniciarPedidoComCracha(ComponentsFactory factory, Button button){
-		this.gerenteDeBebidas.iniciarDrink(factory, button);
+		this.gerenteDeBebidas.iniciarDrink(button);
 		
 		if (!this.gerenteDeBebidas.conferirIngredientes(factory, button)) {
 			return;
@@ -115,6 +116,11 @@ public class GerenteDeMaquina {
 
 	public void setPrecoDaBebida(Button drink, int priceCents) {
 		this.gerenteDeBebidas.setPrecoDaBebida(drink, priceCents);	
+	}
+
+	public void mudarReceita(Button drink, Recipe recipe) {
+		this.gerenteDeBebidas.mudarReceita(drink, recipe);
+		
 	}
 
 }

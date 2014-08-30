@@ -4,6 +4,7 @@ import br.ufpb.dce.aps.coffeemachine.CoffeeMachine;
 import br.ufpb.dce.aps.coffeemachine.Coin;
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Button;
+import br.ufpb.dce.aps.coffeemachine.Recipe;
 
 public class MyCoffeeMachine implements CoffeeMachine {
 
@@ -37,7 +38,10 @@ public class MyCoffeeMachine implements CoffeeMachine {
 
 	public void setPrice(Button drink, int priceCents) {
 		this.gerenteDeMaquina.setPrecoDaBebida(drink,priceCents);
+	}
+
+	public void configuteDrink(Button drink, Recipe recipe) {
+		this.gerenteDeMaquina.mudarReceita(drink, recipe);	
 		this.gerenteDeMaquina.mensagemInicial(factory);
-		
 	}
 }

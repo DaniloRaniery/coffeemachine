@@ -5,21 +5,24 @@ import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class Black extends Bebida {
-	
-	public Black (Button button) {
+
+	public Black(Button button) {
 		if (button == Button.BUTTON_1) {
 			this.button = Button.BUTTON_1;
 		} else {
 			this.button = Button.BUTTON_3;
 		}
+		this.poDeCafe = 15;
+		this.agua = 100;
 	}
 
 	public void release(ComponentsFactory factory) {
-		factory.getWaterDispenser().release(100);
+		factory.getCoffeePowderDispenser().release(this.poDeCafe);
+		factory.getWaterDispenser().release(this.agua);
 		if (button == Button.BUTTON_3) {
-			factory.getSugarDispenser().release(5);
+			factory.getSugarDispenser().release(5.0);
 		}
 		factory.getDisplay().info(Messages.RELEASING);
-		factory.getCupDispenser().release(1);
+		factory.getCupDispenser().release(this.copo);
 	}
 }
