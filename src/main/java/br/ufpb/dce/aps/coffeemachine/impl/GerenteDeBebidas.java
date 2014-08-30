@@ -44,7 +44,7 @@ public class GerenteDeBebidas {
 
 	public void release(ComponentsFactory factory) {
 		this.bebida.release(factory);
-		factory.getDrinkDispenser().release(100.0);
+		factory.getDrinkDispenser().release();
 		factory.getDisplay().info(Messages.TAKE_DRINK);
 
 	}
