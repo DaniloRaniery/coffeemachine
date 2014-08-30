@@ -1,13 +1,13 @@
 package br.ufpb.dce.aps.coffeemachine.impl;
 
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
-import br.ufpb.dce.aps.coffeemachine.Drink;
+import br.ufpb.dce.aps.coffeemachine.Button;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class Bouillon extends Bebida {
 	
-	public Bouillon (Drink drink) {
-		this.drink = drink.BOUILLON;
+	public Bouillon (Button button) {
+		this.button = Button.BUTTON_5;
 	}
 
 	@Override

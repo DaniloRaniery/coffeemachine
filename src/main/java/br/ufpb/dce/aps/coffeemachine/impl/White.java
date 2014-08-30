@@ -1,23 +1,23 @@
 package br.ufpb.dce.aps.coffeemachine.impl;
 
 import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
-import br.ufpb.dce.aps.coffeemachine.Drink;
+import br.ufpb.dce.aps.coffeemachine.Button;
 import br.ufpb.dce.aps.coffeemachine.Messages;
 
 public class White extends Bebida {
 
-	public White(Drink drink) {
-		if (drink == drink.WHITE) {
-			this.drink = drink.WHITE;
+	public White(Button button) {
+		if (button == Button.BUTTON_2) {
+			this.button = Button.BUTTON_2;
 		} else {
-			this.drink = drink.WHITE_SUGAR;
+			this.button = Button.BUTTON_4;
 		}
 	}
 
 	public void release(ComponentsFactory factory) {
 		factory.getWaterDispenser().release(80);
 		factory.getCreamerDispenser().release(20);
-		if (this.drink == drink.WHITE_SUGAR) {
+		if (this.button == Button.BUTTON_4) {
 			factory.getSugarDispenser().release(5);
 		}
 		factory.getDisplay().info(Messages.RELEASING);
