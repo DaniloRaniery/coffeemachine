@@ -14,6 +14,7 @@ public class Black extends Bebida {
 		}
 		this.setPoDeCafe(15);
 		this.setAgua(100);
+		this.setAcucar(5);
 
 	}
 
@@ -21,7 +22,7 @@ public class Black extends Bebida {
 		factory.getCoffeePowderDispenser().release(this.poDeCafe);
 		factory.getWaterDispenser().release(this.agua);
 		if (button == Button.BUTTON_3) {
-			factory.getSugarDispenser().release(5.0);
+			factory.getSugarDispenser().release(this.acucar);
 		}
 		factory.getDisplay().info(Messages.RELEASING);
 		factory.getCupDispenser().release(this.copo);

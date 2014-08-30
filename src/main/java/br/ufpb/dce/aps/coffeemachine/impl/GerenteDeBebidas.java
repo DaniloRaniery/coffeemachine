@@ -9,7 +9,7 @@ public class GerenteDeBebidas {
 
 	private Bebida bebida;
 	private int valorBlack = 35, valorBlackWithSugar = 35, valorWhite = 35, valorWhiteWithSugar = 35;
-	private int valorBouillon = 25;
+	private int valorBouillon = 25, valorSweetCream = 50;
 	private boolean chave = false;
 
 	public void iniciarDrink(Button button) {
@@ -17,8 +17,10 @@ public class GerenteDeBebidas {
 			this.bebida = new Black(button);
 		} else if (button == Button.BUTTON_2 || button == Button.BUTTON_4) {
 			this.bebida = new White(button);
-		} else {
+		} else if (button == Button.BUTTON_5){
 			this.bebida = new Bouillon(button);
+		}else{
+			this.bebida = new SweetCream(button);
 		}
 	}
 
@@ -29,8 +31,8 @@ public class GerenteDeBebidas {
 	public boolean verificaAcucar(ComponentsFactory factory) {
 
 		if (this.bebida.getDrink() == Button.BUTTON_3
-				|| this.bebida.getDrink() == Button.BUTTON_4) {
-			if (!factory.getSugarDispenser().contains(5.0)) {
+				|| this.bebida.getDrink() == Button.BUTTON_4 || this.bebida.getDrink() == Button.BUTTON_6) {
+			if (!factory.getSugarDispenser().contains(this.bebida.getAcucar())) {
 				factory.getDisplay().warn(Messages.OUT_OF_SUGAR);
 				return false;
 			}
@@ -67,8 +69,13 @@ public class GerenteDeBebidas {
 				return false;
 			}
 		}
+		if(this.bebida.getDrink() == Button.BUTTON_6){
+			if(!this.verificaAcucar(factory)){
+				return false;
+			}
+		}
 		if (this.bebida.getDrink() == Button.BUTTON_2
-				|| this.bebida.getDrink() == Button.BUTTON_4) {
+				|| this.bebida.getDrink() == Button.BUTTON_4 || this.bebida.getDrink() == Button.BUTTON_6) {
 			if (!factory.getCreamerDispenser().contains(creme)) {
 				factory.getDisplay().warn(Messages.OUT_OF_CREAMER);
 				return false;
@@ -122,6 +129,14 @@ public class GerenteDeBebidas {
 	public void setValorBouillon(int valorBouillon) {
 		this.valorBouillon = valorBouillon;
 	}
+	
+	public int getValorSweetCream() {
+		return valorSweetCream;
+	}
+
+	public void setValorSweetCream(int valorSweetCream) {
+		this.valorSweetCream = valorSweetCream;
+	}
 
 	public int getValorDaBebida(Button button){
 		if(button == Button.BUTTON_1){
@@ -136,8 +151,11 @@ public class GerenteDeBebidas {
 		else if(button == Button.BUTTON_4){
 			return this.getValorWhiteWithSugar();
 		}
-		else{
+		else if (button == Button.BUTTON_5){
 			return getValorBouillon();
+		}
+		else{
+			return getValorSweetCream();
 		}
 	}
 
@@ -154,8 +172,11 @@ public class GerenteDeBebidas {
 		else if(button == Button.BUTTON_4){
 			this.setValorWhiteWithSugar(priceCents);
 		}
-		else{
+		else if(button == Button.BUTTON_5){
 			this.setValorBouillon(priceCents);
+		}
+		else{
+			this.setValorSweetCream(priceCents);
 		}
 	}
 

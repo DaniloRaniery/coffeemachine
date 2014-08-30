@@ -15,6 +15,7 @@ public class White extends Bebida {
 		this.setAgua(80);
 		this.setCreme(20);
 		this.setPoDeCafe(15);
+		this.setAcucar(5);
 	}
 
 	public void release(ComponentsFactory factory) {
@@ -22,7 +23,7 @@ public class White extends Bebida {
 		factory.getWaterDispenser().release(this.agua);
 		factory.getCreamerDispenser().release(this.creme);
 		if (this.button == Button.BUTTON_4) {
-			factory.getSugarDispenser().release(5.0);
+			factory.getSugarDispenser().release(this.acucar);
 		}
 		factory.getDisplay().info(Messages.RELEASING);
 		factory.getCupDispenser().release(this.copo);

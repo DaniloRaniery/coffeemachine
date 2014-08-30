@@ -6,7 +6,7 @@ import br.ufpb.dce.aps.coffeemachine.ComponentsFactory;
 public abstract class Bebida {
 
 	protected Button button; 
-	protected double poDeCafe = 0, agua = 0, creme = 0, poDeSopa = 0; 
+	protected double poDeCafe = 0, agua = 0, creme = 0, poDeSopa = 0, acucar = 0; 
 	protected int copo = 1;
 	
 	public abstract void release(ComponentsFactory factory);	
@@ -14,7 +14,15 @@ public abstract class Bebida {
 	public Button getDrink(){
 		return this.button;
 	}
-	
+		
+	public double getAcucar() {
+		return acucar;
+	}
+
+	public void setAcucar(double acucar) {
+		this.acucar = acucar;
+	}
+
 	public double getPoDeCafe() {
 		return this.poDeCafe;
 	}

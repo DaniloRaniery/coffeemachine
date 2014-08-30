@@ -42,6 +42,6 @@ public class MyCoffeeMachine implements CoffeeMachine {
 
 	public void configuteDrink(Button drink, Recipe recipe) {
 		this.gerenteDeMaquina.mudarReceita(drink, recipe);	
-		this.gerenteDeMaquina.mensagemInicial(factory);
+		this.gerenteDeMaquina.mensagemInicial(factory, drink);
 	}
 }
